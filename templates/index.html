@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeVerse AI — Explore C++. Think Like a Programmer.</title>
+  
+  <meta name="description" content="CodeVerse AI is an intelligent C++ programming tutor and AI coding laboratory built for computer engineering students and developers. Discuss C++ concepts, syntax, STL, OOP, debugging, algorithms, and viva preparation.">
+  <meta name="theme-color" content="#070a13">
+  
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='assets/favicon.svg') }}">
+  
+  <!-- Vendor Stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/prism-okaidia.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/prism-line-numbers.min.css') }}">
+  
+  <!-- Application Stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/learning_lab.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+</head>
+<body>
+  <!-- Animated Background Matrix & Floating Tokens -->
+  <canvas id="canvas-matrix"></canvas>
+  <div class="floating-tokens-container"></div>
+
+  <!-- Main Application Root -->
+  <div id="app-root">
+    <div class="app-layout">
+
+      <!-- ===================================================================
+           Left Sidebar
+           =================================================================== -->
+      <aside class="sidebar" id="sidebar">
+        <!-- Sidebar Brand Header -->
+        <div class="sidebar-header">
+          <a href="#" class="brand-wrapper" title="CodeVerse AI — C++ Programming Mentor">
+            <img src="{{ url_for('static', filename='assets/logo.svg') }}" alt="CodeVerse AI Logo" class="brand-logo-img">
+            <div class="brand-text-col hide-on-collapsed">
+              <span class="brand-title">CodeVerse AI</span>
+              <span class="brand-tagline">C++ Programming Mentor</span>
+            </div>
+          </a>
+          <button class="btn-sidebar-toggle hide-on-collapsed" id="btn-sidebar-collapse" title="Collapse Sidebar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Sidebar Top Actions -->
+        <div class="sidebar-actions">
+          <button class="btn-new-chat" id="btn-new-chat" title="Start a New C++ Chat (Ctrl+N)">
+            <div class="new-chat-content">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span class="hide-on-collapsed">New C++ Chat</span>
+            </div>
+            <span class="kbd-badge hide-on-collapsed">Ctrl+N</span>
+          </button>
+
+          <div class="search-box-wrapper hide-on-collapsed">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="search-input" id="search-conversations-input" placeholder="Search conversations... (Ctrl+K)">
+          </div>
+        </div>
+
+        <!-- Conversation History Section -->
+        <div class="history-section-title hide-on-collapsed">C++ Conversations</div>
+        <div class="conversations-container" id="conversations-container">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+
+        <!-- Sidebar Navigation Shortcuts -->
+        <div class="sidebar-nav-section">
+          <button class="nav-item highlight-lab trigger-open-lab" data-tab="concepts" title="Open C++ Learning Lab">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 2v7.31M14 9.3V1.99M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"></path>
+              <circle cx="12" cy="15" r="1"></circle>
+            </svg>
+            <span class="hide-on-collapsed">C++ Learning Lab</span>
+          </button>
+
+          <button class="nav-item" id="btn-open-roadmap" title="C++ Learning Roadmap">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line>
+              <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+            <span class="hide-on-collapsed">C++ Roadmap</span>
+          </button>
+
+          <button class="nav-item" id="btn-open-favorites" title="Bookmarked Answers">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span class="hide-on-collapsed">Saved Answers</span>
+          </button>
+
+          <button class="nav-item" id="btn-open-settings" title="Theme and Accessibility Settings">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            <span class="hide-on-collapsed">Theme & Settings</span>
+          </button>
+
+          <button class="nav-item" id="btn-open-about" title="About CodeVerse AI">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span class="hide-on-collapsed">About Project</span>
+          </button>
+
+          <button class="nav-item" id="btn-clear-all-chats" title="Clear all saved chats">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span class="hide-on-collapsed">Clear All Chats</span>
+          </button>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer hide-on-collapsed">
+          <div class="system-status-pill" id="btn-trigger-settings-pill">
+            <span class="status-dot" id="compiler-status-dot"></span>
+            <span id="compiler-status-label">C++ Compiler: Checking...</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ===================================================================
+           Main Workspace
+           =================================================================== -->
+      <main class="main-workspace">
+        <!-- Top Navigation Bar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="btn-mobile-sidebar" id="btn-mobile-sidebar" title="Open Menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+            <h1 class="current-chat-title" id="current-chat-title">
+              <span id="current-chat-title-text">New C++ Conversation</span>
+            </h1>
+          </div>
+
+          <div class="topbar-right">
+            <div class="badge-ai-mode" id="badge-ai-mode">
+              <span class="status-dot"></span>
+              <span>Checking Model...</span>
+            </div>
+
+            <button class="btn-topbar-action trigger-open-lab" data-tab="concepts" title="Open C++ Learning Lab">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 2v7.31M14 9.3V1.99M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"></path>
+              </svg>
+              <span>Learning Lab</span>
+            </button>
+
+            <button class="btn-topbar-action" id="btn-export-chat" title="Export this chat as Markdown or Text">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Export</span>
+            </button>
+
+            <button class="btn-topbar-action" id="btn-open-shortcuts" title="View Keyboard Shortcuts">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                <path d="M6 8h.001M10 8h.001M14 8h.001M18 8h.001M8 12h.001M12 12h.001M16 12h.001M18 16H6"></path>
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <!-- Chat Scroll Area -->
+        <div class="chat-scroll-area">
+          <div class="chat-content-constrained">
+
+            <!-- Welcome Hero Screen (visible when chat is empty) -->
+            <section class="chat-welcome-container" id="chat-welcome">
+              <div class="welcome-emblem-wrapper">
+                <div class="welcome-emblem-halo"></div>
+                <img src="{{ url_for('static', filename='assets/logo.svg') }}" alt="CodeVerse AI Emblem" class="welcome-emblem-img">
+              </div>
+
+              <h2 class="welcome-title">Welcome to CodeVerse AI</h2>
+              <p class="welcome-subtitle">Your personal C++ programming mentor.</p>
+
+              <div class="welcome-badge-cpp">
+                <span>⚡ STRICTLY C++ EXCLUSIVE • ISO C++98 TO C++23</span>
+              </div>
+
+              <!-- 4 Feature Suggestion Cards -->
+              <div class="suggestion-cards-grid">
+                <div class="suggestion-card" data-type="learn">
+                  <div class="card-icon-bubble">📘</div>
+                  <div class="card-title">Learn C++ Theory</div>
+                  <div class="card-desc">Deep theoretical explanations, memory architectures, principles, and diagrams.</div>
+                </div>
+
+                <div class="suggestion-card" data-type="generate">
+                  <div class="card-icon-bubble">⚡</div>
+                  <div class="card-title">Generate C++ Code</div>
+                  <div class="card-desc">Produce complete, compilable modern C++ programs with code walkthrough & complexity.</div>
+                </div>
+
+                <div class="suggestion-card" data-type="debug">
+                  <div class="card-icon-bubble">🛠️</div>
+                  <div class="card-title">Debug My Code</div>
+                  <div class="card-desc">Identify syntax errors, segfaults, memory leaks, and suggest corrected code.</div>
+                </div>
+
+                <div class="suggestion-card" data-type="predict">
+                  <div class="card-icon-bubble">🔍</div>
+                  <div class="card-title">Output Predictor</div>
+                  <div class="card-desc">Explain the output of tricky C++ programs step by step with dry-run trace tables.</div>
+                </div>
+              </div>
+
+              <!-- Quick Prompt Chips -->
+              <div class="quick-chips-wrapper">
+                <button class="prompt-chip" data-prompt="Give detailed theory of pointers and memory addresses in C++ with memory diagrams, principles, and viva questions.">
+                  📘 Theory: Pointers & Memory Architecture
+                </button>
+                <button class="prompt-chip" data-prompt="Give complete compilable C++ code for Binary Search with step-by-step walkthrough and complexity analysis.">
+                  💻 Code: Binary Search Algorithm
+                </button>
+                <button class="prompt-chip" data-prompt="Explain in-depth theory of Polymorphism, virtual functions, and VTables in C++.">
+                  📘 Theory: Polymorphism & VTables
+                </button>
+                <button class="prompt-chip" data-prompt="Give C++ code for class demonstrating constructors, destructors, and RAII memory cleanup.">
+                  💻 Code: Constructors & RAII
+                </button>
+                <button class="prompt-chip" data-prompt="Give theory of std::vector in C++ STL explaining internal dynamic memory reallocation and capacity growth.">
+                  📘 Theory: STL Vector Mechanics
+                </button>
+                <button class="prompt-chip" data-prompt="Prepare 15 high-yield C++ viva questions and model answers for engineering practical exams.">
+                  🎓 Viva: 15 Practical Questions
+                </button>
+              </div>
+            </section>
+
+            <!-- Active Messages List -->
+            <div id="messages-list" style="display:none; flex-direction:column; gap:20px;">
+              <!-- Message bubbles dynamically appended here -->
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Fixed Chat Composer Input -->
+        <div class="composer-outer-wrapper">
+          <div class="composer-box">
+            <div class="composer-input-row">
+              <textarea 
+                id="chat-input" 
+                class="chat-textarea" 
+                rows="1" 
+                placeholder="Ask anything about C++... (e.g. pointers, OOP, STL, debugging, viva questions)"
+                maxlength="4000"
+              ></textarea>
+
+              <div class="composer-btn-group">
+                <button class="btn-composer-icon" id="btn-clear-input" title="Clear Text Input">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+
+                <button class="btn-stop-gen" id="btn-stop" title="Stop response generation">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+                  </svg>
+                  <span>Stop</span>
+                </button>
+
+                <button class="btn-send" id="btn-send" disabled title="Send C++ Question (Enter)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Composer Meta Row -->
+            <div class="composer-meta-row">
+              <div class="composer-tag-label">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>C++ topics only • Built for programmers • Shift+Enter for new line</span>
+              </div>
+
+              <!-- Rotating Programming Status Message -->
+              <div class="composer-rotating-status" id="composer-rotating-status">
+                <div class="spinner-mini"></div>
+                <span id="rotating-status-text">Analyzing AST...</span>
+              </div>
+
+              <div id="char-counter" style="font-family:var(--font-code);">0 / 4000</div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: Special C++ Learning Lab (8 Specialized Tools)
+       =================================================================== -->
+  <div class="modal-overlay" id="modal-learning-lab">
+    <div class="modal-container learning-lab-modal">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#logoGrad)" stroke-width="2">
+            <path d="M10 2v7.31M14 9.3V1.99M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"></path>
+          </svg>
+          <span class="modal-title">C++ Learning Lab</span>
+        </div>
+        <button class="btn-close-modal" id="btn-close-lab" title="Close Lab">✕</button>
+      </div>
+
+      <!-- Navigation Tabs for 8 Tools -->
+      <div class="lab-tabs-nav">
+        <button class="lab-tab-btn active" data-tab="concepts">📘 Concept Explorer</button>
+        <button class="lab-tab-btn" data-tab="generator">⚡ Code Generator</button>
+        <button class="lab-tab-btn" data-tab="predictor">🔍 Output Predictor</button>
+        <button class="lab-tab-btn" data-tab="debugger">🛠️ Debugging Assistant</button>
+        <button class="lab-tab-btn" data-tab="quiz">🎯 Quiz Mode</button>
+        <button class="lab-tab-btn" data-tab="challenge">🏆 Daily Challenge</button>
+        <button class="lab-tab-btn" data-tab="cheatsheet">📑 C++ Cheat Sheet</button>
+        <button class="lab-tab-btn" data-tab="viva">🎓 Viva Preparation</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Tab 1: Concept Explorer -->
+        <div class="lab-tab-pane active" id="lab-pane-concepts">
+          <div class="concepts-filter-bar">
+            <div class="level-pills-group">
+              <button class="btn-level-filter active" data-level="all">All Concepts</button>
+              <button class="btn-level-filter" data-level="beginner">Beginner</button>
+              <button class="btn-level-filter" data-level="intermediate">Intermediate</button>
+              <button class="btn-level-filter" data-level="advanced">Advanced</button>
+            </div>
+            <span style="font-size:0.8rem;color:var(--text-muted);">Curated C++ syllabus concepts with instant chat deep-dive</span>
+          </div>
+          <div class="concepts-cards-grid" id="concepts-grid-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Code Generator -->
+        <div class="lab-tab-pane" id="lab-pane-generator">
+          <div class="lab-form-container">
+            <h3 style="color:var(--accent-cyan);margin-bottom:6px;">⚡ Automated C++ Code Generator</h3>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:14px;">Describe your programming problem or algorithm requirement, and CodeVerse AI will synthesize complete, safe, modern C++ code with full comments and time complexity analysis.</p>
+
+            <label class="lab-input-label">Problem Description or Algorithm Requirement:</label>
+            <textarea class="lab-textarea" id="gen-problem-desc" placeholder="e.g. Implement a thread-safe Queue in C++ using mutex and condition_variable..."></textarea>
+
+            <div class="lab-row-options">
+              <div>
+                <label class="lab-input-label">C++ Standard:</label>
+                <select class="lab-select" id="gen-std-select">
+                  <option value="C++17" selected>C++17 (Recommended)</option>
+                  <option value="C++20">C++20 (Concepts & Coroutines)</option>
+                  <option value="C++11">C++11 (Modern Baseline)</option>
+                  <option value="C++23">C++23 (Bleeding Edge)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="lab-input-label">Architecture Paradigm:</label>
+                <select class="lab-select" id="gen-paradigm-select">
+                  <option value="Object-Oriented (OOP)" selected>Object-Oriented (Classes & RAII)</option>
+                  <option value="Generic / STL (Templates)">Generic / STL (Templates & Algorithms)</option>
+                  <option value="Clean Procedural">Clean Procedural (Functions)</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="btn-lab-submit" id="btn-generate-code" style="margin-top:10px;">
+              <span>Generate C++ Solution in Chat</span> →
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab 3: Output Predictor -->
+        <div class="lab-tab-pane" id="lab-pane-predictor">
+          <div class="lab-form-container">
+            <h3 style="color:var(--accent-cyan);margin-bottom:6px;">🔍 C++ Output Predictor & Dry-Run Tracer</h3>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:14px;">Paste any tricky C++ snippet (pointers, constructor cascades, operator precedence, virtual dispatch) to receive a dry-run variable trace table and accurate output prediction.</p>
+
+            <label class="lab-input-label">Paste C++ Code:</label>
+            <textarea class="lab-textarea" id="predict-code-input" style="min-height:160px;" placeholder="#include <iostream>&#10;int main() {&#10;    int a = 5;&#10;    int* p = &a;&#10;    std::cout << *p + 2;&#10;    return 0;&#10;}"></textarea>
+
+            <button class="btn-lab-submit" id="btn-predict-output" style="margin-top:10px;">
+              <span>Predict Output & Explain Step-by-Step</span> →
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab 4: Debugging Assistant -->
+        <div class="lab-tab-pane" id="lab-pane-debugger">
+          <div class="lab-form-container">
+            <h3 style="color:var(--accent-cyan);margin-bottom:6px;">🛠️ C++ Debugging Assistant</h3>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:14px;">Diagnose compilation errors, segmentation faults, undefined behavior, or memory leaks.</p>
+
+            <label class="lab-input-label">Buggy C++ Code:</label>
+            <textarea class="lab-textarea" id="debug-code-input" placeholder="// Paste your code with bugs or crashes here"></textarea>
+
+            <label class="lab-input-label">Compiler Error / Crash Log (Optional):</label>
+            <textarea class="lab-textarea" id="debug-error-input" style="min-height:70px;" placeholder="e.g. error: no match for 'operator<<' or Segmentation fault (core dumped)"></textarea>
+
+            <button class="btn-lab-submit" id="btn-debug-code" style="margin-top:10px;">
+              <span>Diagnose & Fix Code</span> →
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab 5: Quiz Mode -->
+        <div class="lab-tab-pane" id="lab-pane-quiz">
+          <div class="quiz-panel-wrapper" id="quiz-view-container">
+            <div style="text-align:center;padding:30px;"><div class="spinner-mini" style="margin:0 auto 10px auto;"></div> Loading C++ Quiz...</div>
+          </div>
+        </div>
+
+        <!-- Tab 6: Daily Challenge -->
+        <div class="lab-tab-pane" id="lab-pane-challenge">
+          <div id="challenge-container">
+            <div style="text-align:center;padding:30px;"><div class="spinner-mini" style="margin:0 auto 10px auto;"></div> Loading Daily Challenge...</div>
+          </div>
+        </div>
+
+        <!-- Tab 7: Cheat Sheet -->
+        <div class="lab-tab-pane" id="lab-pane-cheatsheet">
+          <div id="cheatsheet-container">
+            <div style="text-align:center;padding:30px;"><div class="spinner-mini" style="margin:0 auto 10px auto;"></div> Loading Cheat Sheet...</div>
+          </div>
+        </div>
+
+        <!-- Tab 8: Viva Preparation -->
+        <div class="lab-tab-pane" id="lab-pane-viva">
+          <div id="viva-container">
+            <div style="text-align:center;padding:30px;"><div class="spinner-mini" style="margin:0 auto 10px auto;"></div> Loading Viva Questions...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: C++ Learning Roadmap
+       =================================================================== -->
+  <div class="modal-overlay" id="modal-roadmap">
+    <div class="modal-container" style="max-width:750px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+          </svg>
+          <span class="modal-title">C++ Developer Learning Roadmap</span>
+        </div>
+        <button class="btn-close-modal" id="btn-close-roadmap">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <!-- Stage 1 -->
+          <div style="border-left:3px solid var(--accent-cyan);padding-left:16px;">
+            <h4 style="color:var(--accent-cyan);margin-bottom:4px;">Stage 1: Core Fundamentals & Control Flow</h4>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Basic structure, compilation pipeline (Preprocessor, Compiler, Assembler, Linker), variables, constants, type modifiers, I/O formatting (`<iomanip>`), if/else, switch-case, for/while/do-while loops.</p>
+          </div>
+
+          <!-- Stage 2 -->
+          <div style="border-left:3px solid #3b82f6;padding-left:16px;">
+            <h4 style="color:#60a5fa;margin-bottom:4px;">Stage 2: Pointers, Memory & Functions</h4>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Pass-by-value vs pass-by-reference, pointers & addresses, pointer arithmetic, dynamic memory (`new` and `delete`), memory leaks, dangling pointers, recursion, inline functions, function overloading.</p>
+          </div>
+
+          <!-- Stage 3 -->
+          <div style="border-left:3px solid #8b5cf6;padding-left:16px;">
+            <h4 style="color:#c084fc;margin-bottom:4px;">Stage 3: Object-Oriented Programming (OOP)</h4>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Encapsulation, constructors (Default, Parameterized, Copy, Move), destructors, inheritance types, diamond problem & virtual base classes, virtual functions & vtables, pure virtual methods, abstract classes, operator overloading.</p>
+          </div>
+
+          <!-- Stage 4 -->
+          <div style="border-left:3px solid #10b981;padding-left:16px;">
+            <h4 style="color:#34d399;margin-bottom:4px;">Stage 4: Templates & Standard Template Library (STL)</h4>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Function & class templates, sequence containers (`vector`, `deque`, `list`), associative containers (`set`, `map`), unordered containers (`unordered_map`), container adaptors (`stack`, `queue`, `priority_queue`), iterators, STL algorithms (`sort`, `binary_search`, `transform`).</p>
+          </div>
+
+          <!-- Stage 5 -->
+          <div style="border-left:3px solid #f59e0b;padding-left:16px;">
+            <h4 style="color:#fbbf24;margin-bottom:4px;">Stage 5: Modern C++ (C++11 to C++23) & Advanced Systems</h4>
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Smart pointers (`std::unique_ptr`, `std::shared_ptr`, `std::weak_ptr`), RAII idiom, lambdas & closures, move semantics (`std::move`), `constexpr`, file streams (`fstream`), exception handling (`try/catch/throw`, `noexcept`), multithreading (`std::thread`, `std::mutex`).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: About Project
+       =================================================================== -->
+  <div class="modal-overlay" id="modal-about">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <img src="{{ url_for('static', filename='assets/logo.svg') }}" style="width:24px;height:24px;" alt="Logo">
+          <span class="modal-title">About CodeVerse AI</span>
+        </div>
+        <button class="btn-close-modal" id="btn-close-about">✕</button>
+      </div>
+      <div class="modal-body">
+        <h3 style="background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1.4rem;margin-bottom:6px;">CodeVerse AI</h3>
+        <p style="font-style:italic;color:var(--accent-cyan);margin-bottom:14px;">“Explore C++. Think Like a Programmer.”</p>
+        <p><strong>CodeVerse AI</strong> is an interactive web platform exclusively dedicated to C++ programming education, algorithms, and technical evaluation. Created for computer engineering academics and developer training.</p>
+        
+        <h4 style="color:var(--accent-cyan);margin-top:16px;margin-bottom:6px;">Project Architecture:</h4>
+        <ul style="margin-left:20px;font-size:0.88rem;">
+          <li><strong>Frontend:</strong> HTML5, CSS3 Glassmorphism design system, Vanilla JavaScript ES6+.</li>
+          <li><strong>Backend:</strong> Python 3 with Flask, Blueprint modular architecture, SSE streaming.</li>
+          <li><strong>Domain Boundary:</strong> Enforces strict C++ only educational tutor behavior with server-side system instructions and prompt guard.</li>
+          <li><strong>Compiler Runner:</strong> Sandboxed execution with timeout, memory boundaries, and clear configuration guidance.</li>
+          <li><strong>Persistence:</strong> Browser <code>localStorage</code> for conversation retention, bookmarks, and user themes.</li>
+        </ul>
+
+        <h4 style="color:var(--accent-cyan);margin-top:16px;margin-bottom:6px;">College Activity & Live Demonstration:</h4>
+        <p style="font-size:0.88rem;">Designed for Computer Engineering exhibition, live viva demos, coding labs, and technical reviews.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: Theme & Settings
+       =================================================================== -->
+  <div class="modal-overlay" id="modal-settings">
+    <div class="modal-container" style="max-width:480px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-title">Theme & Settings</span>
+        </div>
+        <button class="btn-close-modal" id="btn-close-settings">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div>
+            <label class="lab-input-label" style="margin-bottom:6px;">Color Theme Aesthetic:</label>
+            <select class="lab-select" id="theme-select" style="width:100%;">
+              <option value="midnight" selected>Dark Midnight Navy (Default)</option>
+              <option value="cyberpunk">Cyberpunk Neon (Electric Pink & Cyan)</option>
+              <option value="slate">Deep Slate Blue</option>
+              <option value="light">Light Studio (Clean Contrast)</option>
+            </select>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(16,26,50,0.5);border-radius:8px;border:1px solid var(--border-subtle);">
+            <div>
+              <div style="font-weight:600;color:var(--text-primary);font-size:0.9rem;">Reduced Motion</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);">Disables matrix canvas and background animations</div>
+            </div>
+            <input type="checkbox" id="reduced-motion-toggle" style="width:18px;height:18px;cursor:pointer;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: Keyboard Shortcuts
+       =================================================================== -->
+  <div class="modal-overlay" id="modal-shortcuts">
+    <div class="modal-container" style="max-width:480px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-title">Keyboard Shortcuts</span>
+        </div>
+        <button class="btn-close-modal" id="btn-close-shortcuts">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:12px;font-size:0.88rem;">
+          <span>Start New Chat</span><span class="kbd-badge">Ctrl + N</span>
+          <span>Search Conversations</span><span class="kbd-badge">Ctrl + K</span>
+          <span>Send Message</span><span class="kbd-badge">Enter</span>
+          <span>New Line in Input</span><span class="kbd-badge">Shift + Enter</span>
+          <span>Close Open Dialog / Drawer</span><span class="kbd-badge">Escape</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Drawer: Bookmarked / Favourites Answers
+       =================================================================== -->
+  <aside class="drawer-right" id="drawer-favorites">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <span class="modal-title" style="font-size:1.1rem;">★ Saved Answers</span>
+      </div>
+      <button class="btn-close-modal" id="btn-close-favorites">✕</button>
+    </div>
+    <div class="modal-body" id="favorites-list-container">
+      <!-- Populated dynamically -->
+    </div>
+  </aside>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Vendor Scripts -->
+  <script src="{{ url_for('static', filename='vendor/marked.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/prism.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/prism-cpp.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/prism-cpp2.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/prism-line-numbers.min.js') }}"></script>
+
+  <!-- Application Logic Scripts -->
+  <script src="{{ url_for('static', filename='js/background_effects.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/code_runner.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/learning_lab.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

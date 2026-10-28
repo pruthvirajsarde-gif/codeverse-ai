@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="logoGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="50%" stop-color="#4facfe" />
+      <stop offset="100%" stop-color="#7f00ff" />
+    </linearGradient>
+    <linearGradient id="glowGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00ffcc" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#0066ff" stop-opacity="0.2" />
+    </linearGradient>
+    <filter id="neonGlow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <polygon points="50,6 88,28 88,72 50,94 12,72 12,28" 
+           stroke="url(#logoGrad2)" stroke-width="4" fill="#080e21" fill-opacity="0.9" filter="url(#neonGlow2)"/>
+
+  <circle cx="50" cy="6" r="3" fill="#00f2fe" />
+  <circle cx="88" cy="28" r="3" fill="#4facfe" />
+  <circle cx="88" cy="72" r="3" fill="#7f00ff" />
+  <circle cx="50" cy="94" r="3" fill="#00ffcc" />
+  <circle cx="12" cy="72" r="3" fill="#00f2fe" />
+  <circle cx="12" cy="28" r="3" fill="#4facfe" />
+
+  <polygon points="50,16 80,33 80,67 50,84 20,67 20,33" 
+           stroke="url(#glowGrad2)" stroke-width="1.5" stroke-dasharray="4,2" fill="none"/>
+
+  <path d="M 44 38 C 39 33, 27 35, 27 50 C 27 65, 39 67, 44 62" 
+        stroke="url(#logoGrad2)" stroke-width="6.5" stroke-linecap="round" fill="none" />
+
+  <line x1="56" y1="44" x2="56" y2="56" stroke="#00f2fe" stroke-width="4" stroke-linecap="round" />
+  <line x1="50" y1="50" x2="62" y2="50" stroke="#00f2fe" stroke-width="4" stroke-linecap="round" />
+
+  <line x1="72" y1="44" x2="72" y2="56" stroke="#00ffcc" stroke-width="4" stroke-linecap="round" />
+  <line x1="66" y1="50" x2="78" y2="50" stroke="#00ffcc" stroke-width="4" stroke-linecap="round" />
+</svg>

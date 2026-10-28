@@ -1,0 +1,235 @@
+/* ==========================================================================
+   CodeVerse AI - Core Design System & Tokens
+   "Explore C++. Think Like a Programmer."
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Futuristic Midnight Palette (Primary) */
+  --bg-primary: #070a13;
+  --bg-secondary: #0c1222;
+  --bg-tertiary: #111a33;
+  --bg-glass: rgba(12, 20, 38, 0.75);
+  --bg-glass-elevated: rgba(18, 28, 54, 0.85);
+  --bg-card: rgba(16, 26, 50, 0.65);
+  --bg-input: rgba(10, 17, 33, 0.9);
+
+  /* Accents */
+  --accent-cyan: #00f2fe;
+  --accent-blue: #3b82f6;
+  --accent-blue-deep: #1d4ed8;
+  --accent-purple: #8b5cf6;
+  --accent-purple-glow: #a855f7;
+  --accent-neon-green: #00ffaa;
+  --accent-green-subtle: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-danger: #ef4444;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #00f2fe 0%, #3b82f6 50%, #8b5cf6 100%);
+  --grad-glow: linear-gradient(135deg, rgba(0, 242, 254, 0.4) 0%, rgba(139, 92, 246, 0.4) 100%);
+  --grad-card-border: linear-gradient(135deg, rgba(0, 242, 254, 0.3) 0%, rgba(139, 92, 246, 0.15) 50%, rgba(0, 255, 170, 0.2) 100%);
+  --grad-badge: linear-gradient(135deg, rgba(0, 242, 254, 0.15) 0%, rgba(59, 130, 246, 0.2) 100%);
+  --grad-circuit: radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.12) 0%, rgba(7, 10, 19, 0) 70%);
+
+  /* Text Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-accent: #38bdf8;
+  --text-code: #e2e8f0;
+
+  /* Borders & Shadows */
+  --border-subtle: rgba(56, 189, 248, 0.12);
+  --border-medium: rgba(56, 189, 248, 0.24);
+  --border-highlight: rgba(0, 242, 254, 0.5);
+  --glow-cyan: 0 0 20px rgba(0, 242, 254, 0.35);
+  --glow-purple: 0 0 25px rgba(139, 92, 246, 0.3);
+  --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.45);
+
+  /* Typography */
+  --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-code: 'Fira Code', 'Cascadia Code', Consolas, Monaco, monospace;
+
+  /* Dimensions & Transitions */
+  --sidebar-width: 290px;
+  --sidebar-collapsed-width: 72px;
+  --topbar-height: 64px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Cyberpunk Neon Theme Alternative */
+[data-theme="cyberpunk"] {
+  --bg-primary: #05050b;
+  --bg-secondary: #0a0a16;
+  --bg-tertiary: #131128;
+  --bg-glass: rgba(14, 11, 32, 0.85);
+  --accent-cyan: #00ffff;
+  --accent-blue: #00a8ff;
+  --accent-purple: #ff007f;
+  --accent-purple-glow: #e056fd;
+  --accent-neon-green: #00ff66;
+  --grad-primary: linear-gradient(135deg, #00ffff 0%, #ff007f 100%);
+  --border-subtle: rgba(255, 0, 127, 0.2);
+  --border-highlight: rgba(0, 255, 255, 0.6);
+  --glow-cyan: 0 0 22px rgba(0, 255, 255, 0.45);
+}
+
+/* Deep Slate Theme Alternative */
+[data-theme="slate"] {
+  --bg-primary: #0b111e;
+  --bg-secondary: #131b2e;
+  --bg-tertiary: #1c2740;
+  --bg-glass: rgba(19, 27, 46, 0.85);
+  --accent-cyan: #38bdf8;
+  --accent-blue: #60a5fa;
+  --accent-purple: #818cf8;
+  --border-subtle: rgba(148, 163, 184, 0.15);
+}
+
+/* Light Studio Theme Alternative */
+[data-theme="light"] {
+  --bg-primary: #f1f5f9;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e2e8f0;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --bg-glass-elevated: rgba(248, 250, 252, 0.95);
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --bg-input: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-accent: #0284c7;
+  --text-code: #1e293b;
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-medium: rgba(15, 23, 42, 0.16);
+  --border-highlight: rgba(2, 132, 199, 0.5);
+  --shadow-lg: 0 20px 40px -15px rgba(15, 23, 42, 0.1);
+  --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+/* Reset & Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.45);
+}
+
+/* Top App Layout Shell */
+#app-root {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(0, 242, 254, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(0, 255, 170, 0.05) 0px, transparent 50%);
+}
+
+/* Background Canvas Layer */
+#canvas-matrix {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.38;
+}
+
+/* Floating C++ Code Tokens Container */
+.floating-tokens-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.floating-token {
+  position: absolute;
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  color: rgba(56, 189, 248, 0.16);
+  white-space: nowrap;
+  user-select: none;
+  animation: floatToken linear infinite;
+}
+
+@keyframes floatToken {
+  0% {
+    transform: translateY(105vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+  }
+  85% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-10vh) translateX(40px) rotate(3deg);
+    opacity: 0;
+  }
+}
+
+/* Reduced Motion Mode Support */
+body.reduced-motion *,
+body.reduced-motion *::before,
+body.reduced-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+body.reduced-motion #canvas-matrix,
+body.reduced-motion .floating-tokens-container {
+  display: none !important;
+}
