@@ -13,7 +13,7 @@
 ### Abstract
 Modern AI chatbots are often too generic, generating solutions across dozens of programming languages without deep consideration for low-level memory mechanics, zero-cost abstractions, compiler optimizations, or the strict rigor required in computer systems engineering. **CodeVerse AI** solves this by establishing a dedicated, domain-restricted AI programming mentor focused **exclusively on C++**. 
 
-Built with a futuristic midnight-navy cyberpunk aesthetic, CodeVerse AI assists students and developers with ISO C++ (from C++98 up to C++23), object-oriented programming, data structures, pointer mechanics, modern RAII idioms, algorithm analysis, code output prediction, and live viva preparation. It features a sandboxed execution architecture, genuine compiler diagnostic reporting, real-time token streaming via Server-Sent Events (SSE), and a suite of 8 specialized C++ learning lab tools.
+Built with a futuristic midnight-navy cyberpunk aesthetic, CodeVerse AI assists students and developers with ISO C++ (from C++98 up to C++23), object-oriented programming, data structures, pointer mechanics, modern RAII idioms, algorithm analysis, code output prediction, and live viva preparation. It features a sandboxed execution architecture, genuine compiler diagnostic reporting, real-time token streaming via Server-Sent Events (SSE), and a suite of 8 specialized \C++ learning lab tools.
 
 ---
 
