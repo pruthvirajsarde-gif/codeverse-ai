@@ -296,9 +296,17 @@ window.AppController = (function() {
 
     // Mobile Hamburger
     const btnMobile = document.getElementById('btn-mobile-sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
     if (btnMobile && sidebar) {
       btnMobile.addEventListener('click', () => {
-        sidebar.classList.toggle('mobile-open');
+        const isOpen = sidebar.classList.toggle('mobile-open');
+        if (backdrop) backdrop.classList.toggle('active', isOpen);
+      });
+    }
+
+    if (backdrop && sidebar) {
+      backdrop.addEventListener('click', () => {
+        closeMobileSidebar();
       });
     }
 
@@ -311,7 +319,9 @@ window.AppController = (function() {
 
   function closeMobileSidebar() {
     const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
     if (sidebar) sidebar.classList.remove('mobile-open');
+    if (backdrop) backdrop.classList.remove('active');
   }
 
   // --------------------------------------------------------------------------
